@@ -1,0 +1,11 @@
+{
+  "links": "a[href]",
+  "username": "#username",
+  "password": "#password",
+  "loginButton": "#loginForm",
+  "succefullLoginMessage": ".account-page h2",
+  "pullRequestRow": ".js-issue-row",
+  "pullRequestName": ".link-gray-dark",
+  "pullRequestDate": "relative-time",
+  "pullRequestAuthor": ".opened-by a"
+}
