@@ -10,6 +10,12 @@ Cypress.Commands.add('checkConsoleErrors', (url) => {
     })
 })
 
+Cypress.Commands.add('login', (loginUsername, loginPassword) => {
+  cy.get('#username').type(loginUsername)
+  cy.get('#password').type(loginPassword)
+  cy.get('#loginForm').submit()
+})
+
 Cypress.Commands.add('verifyLinks', (linksLocator, validStatusCodes, invalidStatusCodes) => {
     cy.get(linksLocator).each(($el) => {
       const href = $el.attr('href')
@@ -21,22 +27,21 @@ Cypress.Commands.add('verifyLinks', (linksLocator, validStatusCodes, invalidStat
   })
 })
 
-Cypress.Commands.add('extractPullRequests', (pullRequestRow, pullRequestName, pullRequestDate, pullRequestAuthor, filename) => {
-    cy.get(pullRequestRow).then(($rows) => {
+Cypress.Commands.add('extractPullRequests', (filename) => {
+    cy.get('.js-issue-row').then(($rows) => {
       const prData = []
   
       $rows.each((index, row) => {
         const $row = Cypress.$(row)
-        const prName = $row.find(pullRequestName).text().trim()
-        const createdDate = $row.find(pullRequestDate).attr('datetime')
-        const author = $row.find(pullRequestAuthor).text().trim()
+        const prName = $row.find('.link-gray-dark').text().trim()
+        const createdDate = $row.find('relative-time').attr('datetime')
+        const author = $row.find('.opened-by a').text().trim()
   
         prData.push({ prName, createdDate, author })
       })
   
       const csvContent = 'PR Name,Created Date,Author\n' + prData.map(pr => `${pr.prName},${pr.createdDate},${pr.author}`).join('\n')
   
-      // Use Cypress task to write the CSV content to a file
       cy.task('writeCsv', { filename, content: csvContent })
     })
 })
