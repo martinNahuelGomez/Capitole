@@ -1,4 +1,4 @@
-describe('FashionHub Page Tests', () => {
+describe('Pull request Tests', () => {
     beforeEach(() => {
       cy.fixture('data.json').as('data')
     })
